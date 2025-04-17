@@ -19,10 +19,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        uv pip install --system -r pyproject.toml
+        uv pip install -r pyproject.toml
         # If you have dev dependencies in a group (e.g., [project.optional-dependencies.dev])
         # uncomment and adjust the line below:
-        # uv pip install --system -r pyproject.toml --all-extras # or --extras dev,test
+        # uv pip install -r pyproject.toml --all-extras # or --extras dev,test
 
     - name: Lint with ruff
       run: |
