@@ -17,4 +17,11 @@ services:
     # Set environment variables if needed
     # environment:
     #   - DATABASE_URL=postgresql://user:password@host:port/database
-    # Command is defined in the Dockerfile CMD instruction 
+    # Command is defined in the Dockerfile CMD instruction
+    # Pass environment variables for OTLP exporter
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
+      - OTEL_EXPORTER_OTLP_HEADERS=${OTEL_EXPORTER_OTLP_HEADERS}
+    # Optional: Use an env_file to load variables from a .env file
+    # env_file:
+    #   - .env
