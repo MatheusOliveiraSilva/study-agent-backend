@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount the application code directory for hot-reloading
+      - ./app:/app/app
+      # Mount dependency files to potentially reinstall if they change
+      # Note: Changes might require a rebuild (`docker compose build`)
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./uv.lock:/app/uv.lock # Mount lock file if it exists
+    # Set environment variables if needed
+    # environment:
+    #   - DATABASE_URL=postgresql://user:password@host:port/database
+    # Command is defined in the Dockerfile CMD instruction 

@@ -1,0 +1,40 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python and uv
+      run: |
+        pip install uv
+        uv venv # Activate virtual environment
+
+    - name: Install dependencies
+      run: |
+        uv pip install --system -r pyproject.toml
+        # If you have dev dependencies in a group (e.g., [project.optional-dependencies.dev])
+        # uncomment and adjust the line below:
+        # uv pip install --system -r pyproject.toml --all-extras # or --extras dev,test
+
+    - name: Lint with ruff
+      run: |
+        uv run ruff check .
+        uv run ruff format --check .
+
+    - name: Audit dependencies
+      run: |
+        uv pip audit
+
+    - name: Test with pytest
+      run: |
+        uv run pytest
+
+    # Add Linting, Testing, Auditing steps here 
