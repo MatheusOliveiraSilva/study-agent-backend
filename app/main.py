@@ -10,7 +10,7 @@ from opentelemetry.sdk.trace.export import (
 )
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 
-# Setup OpenTelemetry
+# Setup OpenTelemetry 
 
 # Define resource with service name
 resource = Resource.create({"service.name": "study-agent-backend"})
