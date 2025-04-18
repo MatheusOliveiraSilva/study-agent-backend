@@ -24,7 +24,7 @@ otlp_endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
 otlp_headers = os.getenv("OTEL_EXPORTER_OTLP_HEADERS")
 
 if otlp_endpoint:
-    print(f"Configuring OTLP exporter for endpoint: {otlp_endpoint}")
+    # print(f"Configuring OTLP exporter for endpoint: {otlp_endpoint}")
     # Parse headers if they exist (e.g., "key1=value1,key2=value2")
     headers = {}
     if otlp_headers:
@@ -36,7 +36,7 @@ if otlp_endpoint:
                 "Warning: Could not parse OTEL_EXPORTER_OTLP_HEADERS. Ensure format is key1=value1,key2=value2"
             )
             
-    print(f"DEBUG: OTLP Exporter Headers: {headers}")
+    # print(f"DEBUG: OTLP Exporter Headers: {headers}")
     otlp_exporter = OTLPSpanExporter(endpoint=otlp_endpoint, headers=headers)
     processor = BatchSpanProcessor(otlp_exporter)
     tracer_provider.add_span_processor(processor)
