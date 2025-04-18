@@ -1,6 +1,4 @@
 # tests/core/test_llm_config.py
-import os
-import pytest
 from langchain_openai import AzureOpenAI
 from app.core.llm_config import LLMConfig
 
