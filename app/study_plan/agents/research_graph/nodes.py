@@ -17,24 +17,10 @@ def research_setup(state: ResearchAgentState) -> ResearchAgentState:
 
     return state
 
-# RESEARCH_LLM_CONFIG = LLMConfig(
-#     provider="anthropic", 
-#     model="claude-3-7-sonnet-latest",
-#     temperature=1,
-#     max_tokens=10000,
-#     thinking={"type": "enabled", "budget_tokens": 5000}
-# )
-
-RESEARCH_LLM_CONFIG = LLMConfig(
-    provider="openai",
-    model="o4-mini",
-    reasoning_effort="high",
-)
-
 def research_node(state: ResearchAgentState) -> ResearchAgentState:
+    config = LLMConfig(**state["llm_config"])
 
-    llm = RESEARCH_LLM_CONFIG.get_llm()
+    llm = config.get_llm()
     llm_with_tools = llm.bind_tools([web_search])
 
     return {"research": [llm_with_tools.invoke([state["system_message"]] + state["research"])]}
-
