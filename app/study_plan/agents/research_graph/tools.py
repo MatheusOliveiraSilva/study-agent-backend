@@ -1,9 +1,8 @@
 from langchain_tavily import TavilySearch
-from dotenv import load_dotenv
-
-load_dotenv()
+from app.settings import TAVILY_API_KEY
 
 web_search_tool = TavilySearch(
+    tavily_api_key=TAVILY_API_KEY,
     max_results=5,
     topic="general",
     # include_answer=False,
