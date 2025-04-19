@@ -1,26 +1,39 @@
-
 from langgraph.prebuilt import tools_condition, ToolNode
-from langgraph.graph import START, StateGraph, MessagesState
-from langchain_core.messages import HumanMessage
+from langgraph.graph import START, StateGraph
 from langgraph.checkpoint.memory import MemorySaver
-from .nodes import research_agent
-from .state import ResearchAgentState
+from app.study_plan.agents.research_graph.nodes import research_node, research_setup
+from app.study_plan.agents.research_graph.state import ResearchAgentState
+from app.study_plan.agents.research_graph.tools import web_search   
 
-TOOLS = []
-memory = MemorySaver()
+TOOLS = [web_search]    
 
 # Build graph
-builder = StateGraph(ResearchAgentState)
-builder.add_node("research_agent", research_agent)
-builder.add_node("tools", ToolNode(TOOLS))
-builder.add_edge(START, "research_agent")
+builder = StateGraph(ResearchAgentState) 
+builder.add_node("research_setup", research_setup)
+builder.add_node("research_node", research_node)
+builder.add_node("tools", ToolNode(TOOLS, messages_key="research"))
+builder.add_edge(START, "research_setup")
+builder.add_edge("research_setup", "research_node")
 builder.add_conditional_edges(
-    "research_agent",
+    "research_node",
     # If the latest message (result) from assistant is a tool call -> tools_condition routes to tools (continue to websearch)
     # If the latest message (result) from assistant is a not a tool call -> tools_condition routes to END
-    tools_condition,
+    lambda state: tools_condition(state, messages_key="research"),
 )
-builder.add_edge("tools", "research_agent")
+builder.add_edge("tools", "research_node")
 
 # Compile graph
-graph = builder.compile(checkpointer=memory)
+research_graph = builder.compile()
+
+if __name__ == "__main__":
+
+    response = research_graph.invoke(
+        {
+            "tech_xp": "2 anos como desenvolvedor backend", 
+            "actual_tech_stack": "Python, Langchain, LangGraph, SQL, Git", 
+            "carrer_goals": "Quero virar um AI Engineer, e internacionalizar minha carreira, ganhando em dolar", 
+            "side_project_goal": "Fazer um RAG chatbot com possibilidade de envio de documentos e imagens, monitorar tudo."
+        }
+    )
+
+    print(response)
