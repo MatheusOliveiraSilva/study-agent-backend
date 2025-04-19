@@ -9,7 +9,7 @@ from opentelemetry.sdk.trace.export import (
     ConsoleSpanExporter,
 )
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-
+from app.study_plan import study_api
 # Setup OpenTelemetry 
 
 # Define resource with service name
@@ -53,6 +53,8 @@ app = FastAPI()
 # Instrument FastAPI app
 FastAPIInstrumentor.instrument_app(app)
 
+# Include routers
+app.include_router(study_api.router)
 
 @app.get("/health")
 def health_check():
