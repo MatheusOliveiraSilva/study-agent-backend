@@ -10,6 +10,7 @@ def research_setup(state: ResearchAgentState) -> ResearchAgentState:
     user_infos += f"Tech experience: \n{state['tech_xp']}\n"
     user_infos += f"Tech stack atual: \n{state['actual_tech_stack']}\n"
     user_infos += f"Objetivos de carreira: \n{state['carrer_goals']}\n"
+    user_infos += f"Objetivo de side project: \n{state['side_project_goal']}\n"
 
     state["system_message"] = SystemMessage(content=RESEARCH_SYSTEM_PROMPT.format(user_infos=user_infos))
     state["research"] = [HumanMessage(content="Vamos começar a pesquisa.")]
