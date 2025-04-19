@@ -1,7 +1,4 @@
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from app.settings import AZURE_OPENAI_BASE_URL, OPENAI_API_KEY, AZURE_OPENAI_API_KEY, OPENAI_API_VERSION, ANTHROPIC_API_KEY
 
 class LLMConfig:
     """
@@ -10,11 +7,11 @@ class LLMConfig:
 
     def __init__(self, **kwargs):
         # Store config from environment
-        self.AZURE_OPENAI_BASE_URL = os.environ["AZURE_OPENAI_BASE_URL"]
-        self.OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
-        self.AZURE_OPENAI_API_KEY = os.environ["AZURE_OPENAI_API_KEY"]
-        self.OPENAI_API_VERSION = os.environ["OPENAI_API_VERSION"]
-        self.ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
+        self.AZURE_OPENAI_BASE_URL = AZURE_OPENAI_BASE_URL
+        self.OPENAI_API_KEY = OPENAI_API_KEY
+        self.AZURE_OPENAI_API_KEY = AZURE_OPENAI_API_KEY
+        self.OPENAI_API_VERSION = OPENAI_API_VERSION
+        self.ANTHROPIC_API_KEY = ANTHROPIC_API_KEY
 
         self.provider = kwargs.pop("provider", "azure")
         self.DEFAULT_OPENAI_MODEL = "gpt-4o"
@@ -84,6 +81,9 @@ class LLMConfig:
         if kwargs.get("thinking_mode", None):
             kwargs["temperature"] = 1
 
+            if not kwargs.get("model").startswith("claude-3-7-sonnet"):
+                kwargs.pop("thinking_mode", None)
+                
         return kwargs
         
 
