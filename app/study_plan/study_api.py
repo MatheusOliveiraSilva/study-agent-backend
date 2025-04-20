@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Literal
 from app.study_plan.agents.research_graph.streaming_utilities import LLMStreamer
 from app.study_plan.agents.research_graph.graph import research_graph
+from app.study_plan.services.create_final_plan import CreateFinalPlan
 
 router = APIRouter(prefix="/study_plan", tags=["Study Plan"])
 
@@ -23,6 +24,10 @@ class StudyPlanRequest(BaseModel):
     side_project_goal: str
     llm_config: Optional[ModelConfig] = None
     user_feedback: Optional[str] = None
+
+class FinalPlanRequest(BaseModel):
+    study_plan_string: str
+
 @router.post("/generate_study_plan")
 def study_plan_stream(
         request: StudyPlanRequest
@@ -51,6 +56,15 @@ def study_plan_stream(
         media_type="text/event-stream"
     )
 
+
+@router.post("/generate_final_plan")
+def study_plan_stream(
+        request: FinalPlanRequest
+    ):
+
+    create_final_plan = CreateFinalPlan(request.study_plan_string)
+
+    return create_final_plan.create_final_plan()
 
 
 
