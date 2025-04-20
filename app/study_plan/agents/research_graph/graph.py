@@ -23,7 +23,7 @@ builder.add_conditional_edges(
 builder.add_edge("tools", "research_node")
 
 # Compile graph
-research_graph = builder.compile()
+research_graph = builder.compile(checkpointer=MemorySaver())
 
 if __name__ == "__main__":
 

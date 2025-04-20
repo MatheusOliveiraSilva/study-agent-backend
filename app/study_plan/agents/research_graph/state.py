@@ -7,7 +7,7 @@ class ResearchAgentState(TypedDict):
     actual_tech_stack: str
     carrer_goals: str
     side_project_goal: str
-
+    user_feedback: str
     system_message: SystemMessage
     research: Annotated[list, add_messages]
     research_context: List[str]

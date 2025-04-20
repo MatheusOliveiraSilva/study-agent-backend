@@ -22,7 +22,7 @@ class StudyPlanRequest(BaseModel):
     carrer_goals: str
     side_project_goal: str
     llm_config: Optional[ModelConfig] = None
-
+    user_feedback: Optional[str] = None
 @router.post("/generate_study_plan")
 def study_plan_stream(
         request: StudyPlanRequest
@@ -38,14 +38,15 @@ def study_plan_stream(
         "actual_tech_stack": request.actual_tech_stack,
         "carrer_goals": request.carrer_goals,
         "side_project_goal": request.side_project_goal,
-        "llm_config": llm_config_dict
+        "llm_config": llm_config_dict,
+        "user_feedback": request.user_feedback
     }
 
     return StreamingResponse(
         llm_streamer.stream_response(
             agent=research_graph,
             agent_input=agent_input,
-            memory_config={"configurable": {"thread_id": request.thread_id, "recursion_limit": 100}}
+            memory_config={"configurable": {"thread_id": request.thread_id}, "recursion_limit": 100}
         ),
         media_type="text/event-stream"
     )
