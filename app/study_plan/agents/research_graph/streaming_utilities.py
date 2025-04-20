@@ -34,4 +34,22 @@ class LLMStreamer:
                 config=memory_config
             ):
             
-            yield chunk.content
+            chunk_type = meta.get("langgraph_node", None)
+
+            # We skip the streaming of setup informations
+            if chunk_type == "research_setup":
+                continue
+
+            # We skip the streaming of empty chunks
+            if chunk_type == "research_node":
+                if chunk.content == "":
+                    continue
+
+            # Create a response object with both content and metadata
+            response_obj = {
+                "content": chunk.content,
+                "meta": meta
+            }
+            
+            # Convert to JSON string and format for SSE
+            yield f"data: {json.dumps(response_obj)} \n\n"
