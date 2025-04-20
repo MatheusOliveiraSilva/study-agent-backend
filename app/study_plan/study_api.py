@@ -8,8 +8,8 @@ from app.study_plan.agents.research_graph.graph import research_graph
 router = APIRouter(prefix="/study_plan", tags=["Study Plan"])
 
 class ModelConfig(BaseModel):
-    model: str = "gpt-4o"
-    provider: str = "azure"
+    model: str = "o4-mini"
+    provider: str = "openai"
     reasoning_effort: Optional[Literal["low", "medium", "high"]] = "low"
     think_mode: Optional[bool] = False
     temperature: Optional[float] = 0

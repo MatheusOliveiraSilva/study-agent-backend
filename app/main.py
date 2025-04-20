@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.sdk.resources import Resource
@@ -10,6 +11,7 @@ from opentelemetry.sdk.trace.export import (
 )
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from app.study_plan import study_api
+from app import settings # Import the settings
 # Setup OpenTelemetry 
 
 # Define resource with service name
@@ -49,6 +51,15 @@ else:
 
 
 app = FastAPI()
+
+# Configure CORS from settings
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=settings.ALLOWED_METHODS,
+    allow_headers=settings.ALLOWED_HEADERS,
+)
 
 # Instrument FastAPI app
 FastAPIInstrumentor.instrument_app(app)
