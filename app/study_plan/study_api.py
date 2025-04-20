@@ -45,7 +45,7 @@ def study_plan_stream(
         llm_streamer.stream_response(
             agent=research_graph,
             agent_input=agent_input,
-            memory_config={"configurable": {"thread_id": request.thread_id}}
+            memory_config={"configurable": {"thread_id": request.thread_id, "recursion_limit": 100}}
         ),
         media_type="text/event-stream"
     )
