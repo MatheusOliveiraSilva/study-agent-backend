@@ -14,6 +14,7 @@ services:
       # Note: Changes might require a rebuild (`docker compose build`)
       - ./pyproject.toml:/app/pyproject.toml
       - ./uv.lock:/app/uv.lock # Mount lock file if it exists
+      - ./.env:/app/.env # Mount .env file 
     # Set environment variables if needed
     # environment:
     #   - DATABASE_URL=postgresql://user:password@host:port/database
@@ -23,5 +24,17 @@ services:
       - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
       - OTEL_EXPORTER_OTLP_HEADERS=${OTEL_EXPORTER_OTLP_HEADERS}
     # Optional: Use an env_file to load variables from a .env file
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
+      
+  # Serviço temporário para testar variáveis de ambiente
+  env-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./test_docker_env.py:/app/test_docker_env.py
+      - ./.env:/app/.env # Mount .env file
+    env_file:
+      - .env
+    command: python /app/test_docker_env.py
