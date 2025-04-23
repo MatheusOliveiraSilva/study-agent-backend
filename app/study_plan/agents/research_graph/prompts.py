@@ -29,6 +29,10 @@ Seu output deve ser vir no formato:
 
 BUSQUE POR INFORMAÇÕES ATUALIZADAS E RELEVANTES (ESTAMOS EM 2025).
 
+Faça no máximo 3 buscas na ferramenta de web search.
+
+RESPONDA O PLANO SEMPRE EM INGLÊS.
+
 Input do usuário:
 {user_infos}
 """

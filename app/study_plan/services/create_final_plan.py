@@ -24,7 +24,9 @@ class CreateFinalPlan:
         self.prompt = """
 Você é um especialista em planejamento de estudo.
 
-Vou te dar um plano de estudo e você deve ajustar o plano de estudo para o usuário.
+Vou te dar um plano de estudo e você deve ajustar o plano no formato de output que eu vou te dar.
+
+É importante que você complete cada milestone, se no plano original não tiver todas milestones, adicione.
 
 Input do usuário:
 {study_plan_string}

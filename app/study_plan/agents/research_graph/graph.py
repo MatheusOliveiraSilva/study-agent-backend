@@ -16,8 +16,6 @@ builder.add_edge(START, "research_setup")
 builder.add_edge("research_setup", "research_node")
 builder.add_conditional_edges(
     "research_node",
-    # If the latest message (result) from assistant is a tool call -> tools_condition routes to tools (continue to websearch)
-    # If the latest message (result) from assistant is a not a tool call -> tools_condition routes to END
     lambda state: tools_condition(state, messages_key="research"),
 )
 builder.add_edge("tools", "research_node")
@@ -27,6 +25,7 @@ research_graph = builder.compile(checkpointer=MemorySaver())
 
 if __name__ == "__main__":
 
+    # Test graph
     response = research_graph.invoke(
         {
             "tech_xp": "2 anos como desenvolvedor backend", 
